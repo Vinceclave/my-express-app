@@ -35,10 +35,17 @@ app.get('/items', (req, res) => {
 });
 
 // Logger middleware
-app.use((req, res, next) => {
+app.use((err, req, res, next) => {
     console.log(`${req.method} ${req.url}`);
+    console.error(err.stack);
+    res.status(500).send('Something broke!');
     next();
 });
+
+app.post('/submit', (req,res) => {
+    const data = req.query;
+    res.send(`Received: ${JSON.stringify(data)}`)
+})
 
 // Start the server
 app.listen(port, () => {
